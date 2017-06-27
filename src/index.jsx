@@ -5,6 +5,7 @@ import { useStrict } from 'mobx';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import AppState from './AppState';
+import {Provider} from 'mobx-react';
 import App from './App';
 
 // Force to use actions to modify state on MobX.
@@ -14,7 +15,9 @@ const appState = new AppState();
 
 render(
 	<AppContainer>
-		<App store={appState} />
+		<Provider store={appState}>
+			<App />
+		</Provider>
 	</AppContainer>,
 	document.getElementById('root')
 );
@@ -25,7 +28,9 @@ if (module.hot) {
 
 		render(
 			<AppContainer>
-				<NextApp store={appState} />
+				<Provider store={appState}>
+					<NextApp />
+				</Provider>
 			</AppContainer>,
 			document.getElementById('root')
 		);

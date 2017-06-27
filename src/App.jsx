@@ -1,7 +1,8 @@
 import React from 'react';
-import { observer, PropTypes } from 'mobx-react';
+import { inject, observer, PropTypes } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
 
+@inject('store')
 @observer
 class App extends React.Component {
 	render() {
