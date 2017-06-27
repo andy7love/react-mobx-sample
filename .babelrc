@@ -6,6 +6,7 @@
   ],
   "plugins": [
     "transform-decorators-legacy", 
+    "mobx-deep-action",
     "react-hot-loader/babel"
   ]
 }

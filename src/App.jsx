@@ -7,16 +7,12 @@ class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<button onClick={this.onReset}>
-          Seconds passed: {this.props.store.timer}
+				<button onClick={this.props.store.resetTimer}>
+					Seconds passed: {this.props.store.timer}
 				</button>
 				<DevTools />
 			</div>
 		);
-	}
-
-	onReset = () => {
-		this.props.store.resetTimer();
 	}
 }
 

@@ -1,15 +1,21 @@
-import { observable } from 'mobx';
+import { observable, action } from 'mobx';
 
 class AppState {
   @observable timer = 0;
 
   constructor() {
     setInterval(() => {
-      this.timer += 1;
+      this.increaseTimer();
     }, 1000);
   }
 
-  resetTimer() {
+  @action
+  increaseTimer = () => {
+    this.timer += 1;
+  }
+
+  @action
+  resetTimer = () => {
     this.timer = 0;
   }
 }
