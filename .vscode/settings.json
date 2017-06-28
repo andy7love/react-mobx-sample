@@ -1,6 +1,0 @@
-// Place your settings in this file to overwrite default and user settings.
-{
-    // Unable to get decorators working on VSCode, disabling js control.
-    // ESLint will be in charge of validating JS.
-    "javascript.validate.enable": false
-}

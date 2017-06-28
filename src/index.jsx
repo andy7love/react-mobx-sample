@@ -4,18 +4,31 @@ import React from 'react';
 import { useStrict } from 'mobx';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
-import AppState from './AppState';
-import {Provider} from 'mobx-react';
+import { Provider } from 'mobx-react';
+
+// Stores and Services
+import ApiService from './services/ApiService';
+import UserStore from './stores/UserStore';
+import PostStore from './stores/PostStore';
+import UIStore from './stores/UIStore';
+
 import App from './App';
 
-// Force to use actions to modify state on MobX.
+// Force to use @actions to modify states on MobX stores.
 useStrict(true);
 
-const appState = new AppState();
+// Initialize stores.
+const apiService = new ApiService();
+const userStore = new UserStore(apiService);
+const postStore = new PostStore(apiService, userStore);
+const uiStore = new UIStore(apiService);
 
 render(
 	<AppContainer>
-		<Provider store={appState}>
+		<Provider
+			uiStore={uiStore}
+			userStore={userStore}
+			postStore={postStore} >
 			<App />
 		</Provider>
 	</AppContainer>,
@@ -28,7 +41,10 @@ if (module.hot) {
 
 		render(
 			<AppContainer>
-				<Provider store={appState}>
+				<Provider
+					uiStore={uiStore}
+					userStore={userStore}
+					postStore={postStore} >
 					<NextApp />
 				</Provider>
 			</AppContainer>,

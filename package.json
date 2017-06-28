@@ -6,7 +6,7 @@
     "start": "webpack-dev-server --config config/webpack-dev.config.js",
     "build": "webpack --config config/webpack-prod.config.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "lint": "eslint src/**"
+    "lint": "eslint src/**/*.js && eslint src/**/*.jsx"
   },
   "repository": {
     "type": "git",
@@ -49,6 +49,7 @@
     "mobx-react-devtools": "^4.2.11",
     "mobx-router": "0.0.7",
     "react": "^15.1.0",
-    "react-dom": "^15.1.0"
+    "react-dom": "^15.1.0",
+    "string-format": "^0.5.0"
   }
 }

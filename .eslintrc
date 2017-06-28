@@ -6,7 +6,8 @@
   "env": {
     "es6": true,
     "browser": true,
-    "node": true
+    "node": true,
+    "mocha": true
   },
   "parser": "babel-eslint",
   "parserOptions": {
@@ -18,13 +19,22 @@
     }
   },
   "rules": {
-    "quotes": ["error", "single"],
-    "strict": ["error", "never"],
-    "no-console":"error",
+    "quotes": [
+      "error",
+      "single"
+    ],
+    "strict": [
+      "error",
+      "never"
+    ],
+    "indent": ["error", "tab"],
+    "no-mixed-spaces-and-tabs": "error",
+    "no-console": "warn",
     "no-unused-vars": "error",
+    "no-trailing-spaces": [1, { "skipBlankLines": true }],
     "react/jsx-uses-react": "error",
     "react/jsx-uses-vars": "error",
-    "react/jsx-no-undef" : "error",
+    "react/jsx-no-undef": "error",
     "react/react-in-jsx-scope": "error",
     "react/prop-types": "error"
   },

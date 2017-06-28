@@ -1,16 +1,17 @@
 import React from 'react';
 import { inject, observer, PropTypes } from 'mobx-react';
 import DevTools from 'mobx-react-devtools';
+import { MobxRouter } from 'mobx-router';
+import LoadingScreen from './components/LoadingScreen';
 
-@inject('store')
+@inject('uiStore')
 @observer
 class App extends React.Component {
 	render() {
 		return (
 			<div>
-				<button onClick={this.props.store.resetTimer}>
-					Seconds passed: {this.props.store.timer}
-				</button>
+				<LoadingScreen />
+				<MobxRouter store={this.props.uiStore} />
 				<DevTools />
 			</div>
 		);
@@ -18,7 +19,7 @@ class App extends React.Component {
 }
 
 App.propTypes = {
-	store: PropTypes.observableObject
+	uiStore: PropTypes.observableObject
 };
 
 export default App;

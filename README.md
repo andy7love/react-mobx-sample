@@ -8,3 +8,8 @@
 
 # Production
 - Run `npm build` to run dist files on the `/dist` folder.
+
+# ESLint
+Eslint run automatically with `npm start` and on each reload, but you can manually run it by executing: `npm run lint`.
+
+It is recommended to install a plugin for using `.editorconfig` on your IDE, so your IDE can easily help you to follow the project's standards.
