@@ -41,7 +41,7 @@ class MainBreadcrumb extends React.Component {
 		}];
 
 		let commentActive = (
-			parseInt(this.props.store.router.params.commentId) > 0 &&
+			this.props.store.routeParams.commentId > 0 &&
 			this.props.store.currentComment !== undefined
 		);
 

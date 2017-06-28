@@ -11,8 +11,12 @@ class AppStore {
 	apiService;
 	postStore;
 	userStore;
+	routes;
 	@observable router = new RouterStore();
-	@observable currentCommentId = 0;
+	@observable routeParams = {
+		postId: 0,
+		commentId: 0
+	};
 
 	constructor(apiService, postStore, userStore) {
 		this.apiService = apiService;
@@ -30,22 +34,26 @@ class AppStore {
 	}
 
 	@action
-	setCurrentCommentId = (id) => {
-		this.currentCommentId = id;
+	initializeRouter() {
+		this.routes = Routes(this);
+		startRouter(this.routes, this);
+		this.setRouteParams(this.router.params);
 	}
 
 	@action
-	initializeRouter() {
-		startRouter(Routes, this);
+	setRouteParams = (params) => {
+		this.routeParams.postId = parseInt(params.postId);
+		this.routeParams.commentId = parseInt(params.commentId);
 	}
 
 	@action
 	goToHome = () => {
 		// Hardcoded home page.
 		// There is not "landing page" yet.
-		this.router.goTo(Routes.postComments, {
+		this.router.goTo(this.routes.postComments, {
 			postId: 1
 		});
+		this.routeParams.postId = 1;
 	}
 
 	@action
@@ -53,14 +61,14 @@ class AppStore {
 		if (typeof post !== 'number') {
 			post = this.currentPost;
 		}
-		this.router.goTo(Routes.postComments, {
+		this.router.goTo(this.routes.postComments, {
 			postId: post.id
 		});
 	}
 
 	@action
 	goToCommentDetail = (comment) => {
-		this.router.goTo(Routes.commentDetail, {
+		this.router.goTo(this.routes.commentDetail, {
 			postId: comment.postId,
 			commentId: comment.id
 		})
@@ -73,24 +81,24 @@ class AppStore {
 
 	@computed
 	get currentPost() {
-		if (!this.router.params.postId ||
+		if (this.routeParams.postId === 0 ||
 			this.isLoading ||
 			this.postStore.posts.length === 0) {
 			return undefined;
 		}
 
-		return this.postStore.getPost(this.router.params.postId);
+		return this.postStore.getPost(this.routeParams.postId);
 	}
 
 	@computed
 	get currentComment() {
-		if (parseInt(this.router.params.commentId) === 0 ||
+		if (this.routeParams.commentId === 0 ||
 			this.isLoading ||
 			this.currentPost === undefined) {
 			return undefined;
 		}
 
-		return this.currentPost.getComment(this.router.params.commentId);
+		return this.currentPost.getComment(this.routeParams.commentId);
 	}
 
 	dispose() {
