@@ -1,5 +1,11 @@
 require('react-hot-loader/patch');
+
+// Styles
+require('normalize.css/normalize.css');
+require('semantic-ui-css/semantic.min.css');
 require('./App.scss');
+
+// Framework
 import React from 'react';
 import { useStrict } from 'mobx';
 import { render } from 'react-dom';
@@ -10,25 +16,23 @@ import { Provider } from 'mobx-react';
 import ApiService from './services/ApiService';
 import UserStore from './stores/UserStore';
 import PostStore from './stores/PostStore';
-import UIStore from './stores/UIStore';
+import AppStore from './stores/AppStore';
 
+// App
 import App from './App';
 
-// Force to use @actions to modify states on MobX stores.
+// Good practice: Force to use @actions to modify states on MobX stores.
 useStrict(true);
 
-// Initialize stores.
+// Initializing stores
 const apiService = new ApiService();
 const userStore = new UserStore(apiService);
 const postStore = new PostStore(apiService, userStore);
-const uiStore = new UIStore(apiService);
+const appStore = new AppStore(apiService, postStore, userStore);
 
 render(
 	<AppContainer>
-		<Provider
-			uiStore={uiStore}
-			userStore={userStore}
-			postStore={postStore} >
+		<Provider store={appStore}>
 			<App />
 		</Provider>
 	</AppContainer>,
@@ -41,10 +45,7 @@ if (module.hot) {
 
 		render(
 			<AppContainer>
-				<Provider
-					uiStore={uiStore}
-					userStore={userStore}
-					postStore={postStore} >
+				<Provider store={appStore}>
 					<NextApp />
 				</Provider>
 			</AppContainer>,

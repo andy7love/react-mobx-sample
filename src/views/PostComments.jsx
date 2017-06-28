@@ -1,35 +1,27 @@
 import React from 'react';
 import { inject, observer, PropTypes } from 'mobx-react';
-import PostComment from '../components/PostComment';
+import CommentList from '../components/CommentList';
 
-@inject('uiStore')
-@inject('postStore')
+@inject('store')
 @observer
 class PostComments extends React.Component {
 	render() {
-		let post = this.props.postStore.getPost(this.props.uiStore.router.params.postId);
-		if(	this.props.uiStore.isLoading ||
-			post === undefined) {
+		let post = this.props.store.currentPost;
+		if (post === undefined) {
 			return (<div></div>);
 		}
 
-		let comments = (post.comments.length > 0) ? post.comments.map(comment => <PostComment key={comment.id} comment={comment} />) : '';
-
 		return (
 			<div>
-				Viewing comments for post {post.id}
-				<br /><br />
-				<ul>
-					{comments}
-				</ul>
+				<h2>Viewing comments for post {post.id}</h2>
+				<CommentList comments={post.comments} />
 			</div>
 		);
 	}
 }
 
 PostComments.propTypes = {
-	uiStore: PropTypes.observableObject,
-	postStore: PropTypes.objectOrObservableObject
+	store: PropTypes.observableObject
 };
 
 export default PostComments;

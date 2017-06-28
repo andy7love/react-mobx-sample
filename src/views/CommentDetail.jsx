@@ -1,36 +1,44 @@
 import React from 'react';
 import { inject, observer, PropTypes } from 'mobx-react';
+import { Card, Button } from 'semantic-ui-react';
 
-@inject('uiStore')
-@inject('postStore')
+@inject('store')
 @observer
 class CommentDetail extends React.Component {
 	render() {
-		let post = this.props.postStore.getPost(this.props.uiStore.router.params.postId);
-		if(	this.props.uiStore.isLoading ||
-			post === undefined ||
-			post.getComment(this.props.uiStore.router.params.commentId) === undefined) {
+		let comment = this.props.store.currentComment;
+		if (comment === undefined) {
 			return (<div></div>);
 		}
 
-		let comment = post.getComment(this.props.uiStore.router.params.commentId);
-
 		return (
 			<div>
-				Im the comment's detail.
-				{comment.body}
-				<br /><br />
-				{comment.author.name}
-				<br /><br />
-				{comment.author.email}
+				<h2>Viewing comment {comment.id}</h2>
+				<Card>
+					<Card.Content extra>
+						<div className='ui buttons'>
+							<Button basic color='grey' onClick={this.props.store.goToPostComments}>Back to Post</Button>
+						</div>
+					</Card.Content>
+					<Card.Content>
+						<Card.Header>
+							{comment.author.name}
+						</Card.Header>
+						<Card.Meta>
+							{comment.author.email}
+						</Card.Meta>
+						<Card.Description>
+							{comment.body}
+						</Card.Description>
+					</Card.Content>
+				</Card>
 			</div>
 		);
 	}
 }
 
 CommentDetail.propTypes = {
-	uiStore: PropTypes.observableObject,
-	postStore: PropTypes.observableObject
+	store: PropTypes.observableObject
 };
 
 export default CommentDetail;

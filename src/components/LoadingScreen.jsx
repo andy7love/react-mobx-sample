@@ -1,21 +1,22 @@
 import React from 'react';
 import { inject, observer, PropTypes } from 'mobx-react';
+import { Dimmer, Loader } from 'semantic-ui-react'
 
-@inject('uiStore')
+@inject('store')
 @observer
 class LoadingScreen extends React.Component {
 	render() {
-		let loading = (this.props.uiStore.isLoading) ? 'Loading...' : '';
+		let isLoading = this.props.store.isLoading;
 		return (
-			<div>
-				{loading}
-			</div>
+			<Dimmer active={isLoading} inverted>
+				<Loader active={isLoading} size='large'>Loading</Loader>
+			</Dimmer>
 		);
 	}
 }
 
 LoadingScreen.propTypes = {
-	uiStore: PropTypes.observableObject
+	store: PropTypes.observableObject
 };
 
 export default LoadingScreen;
