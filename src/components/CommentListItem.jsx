@@ -2,6 +2,7 @@ import React from 'react';
 import { action } from 'mobx';
 import { inject, observer, PropTypes } from 'mobx-react';
 import { Card, Button } from 'semantic-ui-react';
+import Ellipsis from '../utils/Ellipsis';
 
 @inject('store')
 @observer
@@ -12,13 +13,13 @@ class CommentListItem extends React.Component {
 			<Card>
 				<Card.Content>
 					<Card.Header>
-						{comment.author.name}
+						{Ellipsis.prepend(comment.author.name, 20)}
 					</Card.Header>
 					<Card.Meta>
 						{comment.author.email}
 					</Card.Meta>
 					<Card.Description>
-						{comment.body}
+						{Ellipsis.prepend(comment.body, 30)}
 					</Card.Description>
 				</Card.Content>
 				<Card.Content extra>

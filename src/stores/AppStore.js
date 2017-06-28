@@ -94,7 +94,7 @@ class AppStore {
 	}
 
 	dispose() {
-
+		// TODO: dispose reactions.
 	}
 }
 
