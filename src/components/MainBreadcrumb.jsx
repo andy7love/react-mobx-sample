@@ -1,4 +1,5 @@
 import React from 'react';
+import { computed } from 'mobx';
 import { inject, observer, PropTypes } from 'mobx-react';
 import { Breadcrumb, Divider } from 'semantic-ui-react';
 
@@ -8,13 +9,14 @@ class MainBreadcrumb extends React.Component {
 	render() {
 		return (
 			<Breadcrumb className="main-breadcrumb">
-				{this.getBreadcrumbContent()}
+				{this.breadcrumbContent}
 			</Breadcrumb>
 		);
 	}
 
-	getBreadcrumbContent = () => {
-		let breadcrumb = this.getBreadcrumbItems().map((item, i) =>
+	@computed
+	get breadcrumbContent() {
+		let breadcrumb = this.breadcrumbItems.map((item, i) =>
 			<Breadcrumb.Section
 				key={i * 2}
 				link={item.link}
@@ -32,7 +34,8 @@ class MainBreadcrumb extends React.Component {
 		return breadcrumb;
 	}
 
-	getBreadcrumbItems = () => {
+	@computed
+	get breadcrumbItems() {
 		let breadCrumbItems = [{
 			name: 'Home',
 			onClick: this.props.store.goToHome,
@@ -49,7 +52,7 @@ class MainBreadcrumb extends React.Component {
 			this.props.store.currentPost !== undefined) {
 			breadCrumbItems.push({
 				name: 'Post' + this.props.store.currentPost.id,
-				onClick: this.props.store.goToPostComments,
+				onClick: (commentActive) ? this.props.store.goToPostComments : null,
 				link: commentActive,
 				active: !commentActive
 			});
