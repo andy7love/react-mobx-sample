@@ -5,6 +5,10 @@ import CommentListItem from './CommentListItem';
 
 @observer
 class CommentList extends React.Component {
+	static propTypes = {
+		comments: PropTypes.arrayOrObservableArray
+	}
+
 	render() {
 		let comments = (this.props.comments.length === 0) ? '' :
 			this.props.comments.map(comment =>
@@ -18,9 +22,5 @@ class CommentList extends React.Component {
 		);
 	}
 }
-
-CommentList.propTypes = {
-	comments: PropTypes.arrayOrObservableArray
-};
 
 export default CommentList;

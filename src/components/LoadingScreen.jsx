@@ -5,6 +5,10 @@ import { Dimmer, Loader } from 'semantic-ui-react'
 @inject('store')
 @observer
 class LoadingScreen extends React.Component {
+	static propTypes = {
+		store: PropTypes.observableObject
+	}
+
 	render() {
 		let isLoading = this.props.store.isLoading;
 		return (
@@ -14,9 +18,5 @@ class LoadingScreen extends React.Component {
 		);
 	}
 }
-
-LoadingScreen.propTypes = {
-	store: PropTypes.observableObject
-};
 
 export default LoadingScreen;

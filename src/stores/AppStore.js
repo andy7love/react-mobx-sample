@@ -1,59 +1,51 @@
-import { observable, computed, action, autorun } from 'mobx';
-import { RouterStore, startRouter } from 'mobx-router';
-import Routes from '../config/Routes';
+import { computed, action, autorun } from 'mobx';
+import ApiService from '../services/ApiService';
+import RouterService from '../services/RouterService';
 
 /**
  * Store that represents the state of the app's user interface.
  * Also provides UI actions to change app state.
  * And it contains reference for others domain stores.
+ * Some app states are derived from domain stores.
  */
 class AppStore {
 	apiService;
+	routerService;
 	postStore;
 	userStore;
+	routerStore;
 	routes;
-	@observable router = new RouterStore();
-	@observable routeParams = {
-		postId: 0,
-		commentId: 0
-	};
+	storeHandler;
 
-	constructor(apiService, postStore, userStore) {
+	constructor(routerStore, postStore, userStore, apiService = ApiService, routerService = RouterService) {
+		this.routerService = routerService;
 		this.apiService = apiService;
 		this.postStore = postStore;
 		this.userStore = userStore;
+		this.routerStore = routerStore;
 
-		this.initializeRouter();
-
-		autorun(() => {
+		this.storeHandler = autorun(() => {
 			// Fallback to home page if url was not found.
-			if (this.router.currentPath === '') {
+			let currentMatch = this.routerService.getCurrentMatch(this.routerStore.location.pathname);
+			if (currentMatch === undefined) {
 				this.goToHome();
 			}
 		});
 	}
 
 	@action
-	initializeRouter() {
-		this.routes = Routes(this);
-		startRouter(this.routes, this);
-		this.setRouteParams(this.router.params);
-	}
-
-	@action
-	setRouteParams = (params) => {
-		this.routeParams.postId = parseInt(params.postId);
-		this.routeParams.commentId = parseInt(params.commentId);
+	goTo(route, params) {
+		let path = this.routerService.getRoute(route, params);
+		this.routerStore.push(path);
 	}
 
 	@action
 	goToHome = () => {
 		// Hardcoded home page.
 		// There is not "landing page" yet.
-		this.router.goTo(this.routes.postComments, {
+		this.goTo(this.routerService.paths.postComments, {
 			postId: 1
 		});
-		this.routeParams.postId = 1;
 	}
 
 	@action
@@ -61,22 +53,27 @@ class AppStore {
 		if (typeof post !== 'number') {
 			post = this.currentPost;
 		}
-		this.router.goTo(this.routes.postComments, {
+		this.goTo(this.routerService.paths.postComments, {
 			postId: post.id
 		});
 	}
 
 	@action
 	goToCommentDetail = (comment) => {
-		this.router.goTo(this.routes.commentDetail, {
+		this.goTo(this.routerService.paths.commentDetail, {
 			postId: comment.postId,
 			commentId: comment.id
-		})
+		});
 	}
 
 	@computed
 	get isLoading() {
 		return this.apiService.pendingRequests > 0;
+	}
+
+	@computed
+	get routeParams() {
+		return this.routerService.getRouteParams(this.routerStore.location.pathname);
 	}
 
 	@computed
@@ -102,7 +99,7 @@ class AppStore {
 	}
 
 	dispose() {
-		// TODO: dispose reactions.
+		this.storeHandler();
 	}
 }
 

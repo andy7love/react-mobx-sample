@@ -7,6 +7,11 @@ import Ellipsis from '../utils/Ellipsis';
 @inject('store')
 @observer
 class CommentListItem extends React.Component {
+	static propTypes = {
+		store: PropTypes.observableObject,
+		comment: PropTypes.observableObject
+	}
+
 	render() {
 		let comment = this.props.comment;
 		return (
@@ -36,10 +41,5 @@ class CommentListItem extends React.Component {
 		this.props.store.goToCommentDetail(this.props.comment);
 	}
 }
-
-CommentListItem.propTypes = {
-	store: PropTypes.observableObject,
-	comment: PropTypes.observableObject
-};
 
 export default CommentListItem;

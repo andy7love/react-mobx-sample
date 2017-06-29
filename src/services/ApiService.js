@@ -47,4 +47,5 @@ class ApiService {
 	}
 }
 
-export default ApiService;
+let singleton = new ApiService();
+export default singleton;

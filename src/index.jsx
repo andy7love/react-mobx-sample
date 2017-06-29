@@ -11,9 +11,11 @@ import { useStrict } from 'mobx';
 import { render } from 'react-dom';
 import { AppContainer } from 'react-hot-loader';
 import { Provider } from 'mobx-react';
+import createBrowserHistory from 'history/createBrowserHistory';
+import { RouterStore, syncHistoryWithStore } from 'mobx-react-router';
+import { Router } from 'react-router';
 
 // Stores and Services
-import ApiService from './services/ApiService';
 import UserStore from './stores/UserStore';
 import PostStore from './stores/PostStore';
 import AppStore from './stores/AppStore';
@@ -24,16 +26,22 @@ import App from './App';
 // Good practice: Force to use @actions to modify states on MobX stores.
 useStrict(true);
 
+// Initializing router.
+const browserHistory = createBrowserHistory();
+const routerStore = new RouterStore();
+const history = syncHistoryWithStore(browserHistory, routerStore);
+
 // Initializing stores
-const apiService = new ApiService();
-const userStore = new UserStore(apiService);
-const postStore = new PostStore(apiService, userStore);
-const appStore = new AppStore(apiService, postStore, userStore);
+const userStore = new UserStore();
+const postStore = new PostStore(userStore);
+const appStore = new AppStore(routerStore, postStore, userStore);
 
 render(
 	<AppContainer>
 		<Provider store={appStore}>
-			<App />
+			<Router history={history}>
+				<App />
+			</Router>
 		</Provider>
 	</AppContainer>,
 	document.getElementById('root')
@@ -46,7 +54,9 @@ if (module.hot) {
 		render(
 			<AppContainer>
 				<Provider store={appStore}>
-					<NextApp />
+					<Router history={history}>
+						<NextApp />
+					</Router>
 				</Provider>
 			</AppContainer>,
 			document.getElementById('root')

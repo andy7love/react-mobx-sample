@@ -5,10 +5,14 @@ import { Card, Button } from 'semantic-ui-react';
 @inject('store')
 @observer
 class CommentDetail extends React.Component {
+	static propTypes = {
+		store: PropTypes.observableObject
+	}
+
 	render() {
 		let comment = this.props.store.currentComment;
 		if (comment === undefined) {
-			return (<div></div>);
+			return null;
 		}
 
 		return (
@@ -36,9 +40,5 @@ class CommentDetail extends React.Component {
 		);
 	}
 }
-
-CommentDetail.propTypes = {
-	store: PropTypes.observableObject
-};
 
 export default CommentDetail;

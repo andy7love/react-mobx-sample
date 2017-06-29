@@ -1,14 +1,18 @@
 import React from 'react';
-import { inject, observer, PropTypes } from 'mobx-react';
+import { inject, observer, PropTypes as PropTypes } from 'mobx-react';
 import CommentList from '../components/CommentList';
 
 @inject('store')
 @observer
 class PostComments extends React.Component {
+	static propTypes = {
+		store: PropTypes.observableObject
+	}
+
 	render() {
 		let post = this.props.store.currentPost;
 		if (post === undefined) {
-			return (<div></div>);
+			return null;
 		}
 
 		return (
@@ -19,9 +23,5 @@ class PostComments extends React.Component {
 		);
 	}
 }
-
-PostComments.propTypes = {
-	store: PropTypes.observableObject
-};
 
 export default PostComments;

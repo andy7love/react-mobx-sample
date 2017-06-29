@@ -6,6 +6,10 @@ import { Breadcrumb, Divider } from 'semantic-ui-react';
 @inject('store')
 @observer
 class MainBreadcrumb extends React.Component {
+	static propTypes = {
+		store: PropTypes.observableObject
+	}
+
 	render() {
 		return (
 			<Breadcrumb className="main-breadcrumb">
@@ -70,9 +74,5 @@ class MainBreadcrumb extends React.Component {
 		return breadCrumbItems;
 	}
 }
-
-MainBreadcrumb.propTypes = {
-	store: PropTypes.observableObject
-};
 
 export default MainBreadcrumb;

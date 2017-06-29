@@ -1,4 +1,5 @@
 import { observable, action } from 'mobx';
+import ApiService from '../services/ApiService';
 import User from './models/User';
 
 /**
@@ -8,7 +9,7 @@ class UserStore {
 	apiService;
 	@observable users = [];
 
-	constructor(apiService) {
+	constructor(apiService = ApiService) {
 		this.apiService = apiService;
 	}
 
